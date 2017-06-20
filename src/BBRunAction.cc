@@ -19,17 +19,10 @@ void BBRunAction::BeginOfRunAction(const G4Run*)
   << G4Threading::G4GetThreadId()
   << G4endl;
 
-  if (G4Threading::IsWorkerThread()) {
-
-    BB::nEvents = 0;
-    BB::nEventsWithATrackInCubePV = 0;
-
-  } else {  // Master thread
-
-    BB::nMasterEvents = 0;
-    BB::nMasterEventsWithATrackInCubePV = 0;
-
-  }
+  BB::nEvents = 0;
+  BB::nEventsWithATrackInCubePV = 0;
+  BB::nMasterEvents = 0;
+  BB::nMasterEventsWithATrackInCubePV = 0;
 }
 
 namespace {
