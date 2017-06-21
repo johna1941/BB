@@ -2,6 +2,7 @@
 
 #include "BBData.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4AutoLock.hh"
 
 #include "G4Event.hh"
 
@@ -16,15 +17,11 @@ void BBEventAction::EndOfEventAction(const G4Event* event)
 {   
 //  G4cout << "BBEventAction::EndOfEventAction" << G4endl;
 
-#ifdef G4MULTITHREADED
   ++BB::nEvents;
   if (BB::cubeEncountered) ++BB::nEventsWithATrackInCubePV;
-#else
-  ++BB::nMasterEvents;
-  if (BB::cubeEncountered) ++BB::nMasterEventsWithATrackInCubePV;
-#endif
 
-  // Always use a lock when writing a file in MT mode
+  // Always use a lock when writing a file in MT mode.
+  // No action in case of sequential mode.
   G4AutoLock lock(&BB::outFileMutex);
   BB::outFile
   << "#,EventID,eDepEvent/MeV"

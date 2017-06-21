@@ -21,8 +21,10 @@ void BBRunAction::BeginOfRunAction(const G4Run*)
 
   BB::nEvents = 0;
   BB::nEventsWithATrackInCubePV = 0;
-  BB::nMasterEvents = 0;
-  BB::nMasterEventsWithATrackInCubePV = 0;
+  if (G4Threading::IsMasterThread()) {
+    BB::pMasterNEvents = &BB::nEvents;
+    BB::pMasterNEventsWithATrackInCubePV = &BB::nEventsWithATrackInCubePV;
+  }
 }
 
 namespace {
@@ -38,17 +40,18 @@ void BBRunAction::EndOfRunAction(const G4Run* run)
     << G4Threading::G4GetThreadId()
     << ", " << BB::nEvents << " events"
     << G4endl;
-    
+
+    // Update master quantities
     // Always use a lock when writing to a location that is shared by threads
     G4AutoLock lock(&mutex);
-    BB::nMasterEvents += BB::nEvents;
-    BB::nMasterEventsWithATrackInCubePV += BB::nEventsWithATrackInCubePV;
+    *BB::pMasterNEvents += BB::nEvents;
+    *BB::pMasterNEventsWithATrackInCubePV += BB::nEventsWithATrackInCubePV;
 
   } else {  // Master thread
 
     G4cout
     << "BBRunAction::EndOfRunAction: Master thread: "
-    << BB::nMasterEvents << " events"
+    << BB::nEvents << " events"
     << G4endl;
     
     BB::outFile
@@ -56,8 +59,8 @@ void BBRunAction::EndOfRunAction(const G4Run* run)
     << std::endl;
     BB::outFile
     << "#," << run->GetRunID()
-    << ',' << BB::nMasterEvents
-    << ',' << BB::nMasterEventsWithATrackInCubePV
+    << ',' << BB::nEvents
+    << ',' << BB::nEventsWithATrackInCubePV
     << std::endl;
   }
 }
