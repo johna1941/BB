@@ -14,13 +14,15 @@ BBRunAction::~BBRunAction()
 
 void BBRunAction::BeginOfRunAction(const G4Run*)
 {
-  G4cout
-  << "BBRunAction::BeginOfRunAction: Thread: "
-  << G4Threading::G4GetThreadId()
-  << G4endl;
+//  G4cout
+//  << "BBRunAction::BeginOfRunAction: Thread: "
+//  << G4Threading::G4GetThreadId()
+//  << G4endl;
 
   BB::nEvents = 0;
   BB::nEventsWithATrackInCubePV = 0;
+
+  // Initialise pointers to master quantities
   if (G4Threading::IsMasterThread()) {
     BB::pMasterNEvents = &BB::nEvents;
     BB::pMasterNEventsWithATrackInCubePV = &BB::nEventsWithATrackInCubePV;
