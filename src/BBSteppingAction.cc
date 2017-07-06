@@ -25,9 +25,9 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   if (prePV == BB::cubePV) {
     // Mark event as having a track in specified volume
-    BB::cubeEncountered = true;
+    fCubeEncountered = true;
     // Accumulate energy deposit
-    BB::eDepEvent += eDep;
+    fEDepEvent += eDep;
   }
 
   // Always use a lock when writing a file in MT mode

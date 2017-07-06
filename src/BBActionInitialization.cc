@@ -16,8 +16,8 @@ void BBActionInitialization::Build() const
 {
   G4VUserPrimaryGeneratorAction* primaryGeneratorAction
   = new BBPrimaryGeneratorAction;
-  G4UserRunAction* runAction = new BBRunAction;
-  G4UserEventAction* eventAction = new BBEventAction;
+  BBRunAction* runAction = new BBRunAction;
+  G4UserEventAction* eventAction = new BBEventAction(runAction);
   G4UserTrackingAction* trackingAction = new BBTrackingAction;
   G4UserSteppingAction* steppingAction = new BBSteppingAction;
 

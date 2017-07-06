@@ -6,6 +6,8 @@
 #include "G4Threading.hh"
 #include "G4AutoLock.hh"
 
+BBRunAction* BBRunAction::fpMasterRunAction = nullptr;
+
 BBRunAction::BBRunAction()
 {}
 
@@ -19,14 +21,12 @@ void BBRunAction::BeginOfRunAction(const G4Run*)
 //  << G4Threading::G4GetThreadId()
 //  << G4endl;
 
-  BB::nEvents = 0;
-  BB::nEventsWithATrackInCubePV = 0;
-
-  // Initialise pointers to master quantities
   if (G4Threading::IsMasterThread()) {
-    BB::pMasterNEvents = &BB::nEvents;
-    BB::pMasterNEventsWithATrackInCubePV = &BB::nEventsWithATrackInCubePV;
+    fpMasterRunAction = this;
   }
+
+  fNEvents = 0;
+  fNEventsWithATrackInCubePV = 0;
 }
 
 namespace {
@@ -40,20 +40,20 @@ void BBRunAction::EndOfRunAction(const G4Run* run)
     G4cout
     << "BBRunAction::EndOfRunAction: Thread: "
     << G4Threading::G4GetThreadId()
-    << ", " << BB::nEvents << " events"
+    << ", " << fNEvents << " events"
     << G4endl;
 
     // Update master quantities
     // Always use a lock when writing to a location that is shared by threads
     G4AutoLock lock(&mutex);
-    *BB::pMasterNEvents += BB::nEvents;
-    *BB::pMasterNEventsWithATrackInCubePV += BB::nEventsWithATrackInCubePV;
+    fpMasterRunAction->fNEvents += fNEvents;
+    fpMasterRunAction->fNEventsWithATrackInCubePV += fNEventsWithATrackInCubePV;
 
   } else {  // Master thread
 
     G4cout
     << "BBRunAction::EndOfRunAction: Master thread: "
-    << BB::nEvents << " events"
+    << fNEvents << " events"
     << G4endl;
     
     BB::outFile
@@ -61,8 +61,8 @@ void BBRunAction::EndOfRunAction(const G4Run* run)
     << std::endl;
     BB::outFile
     << "#," << run->GetRunID()
-    << ',' << BB::nEvents
-    << ',' << BB::nEventsWithATrackInCubePV
+    << ',' << fNEvents
+    << ',' << fNEventsWithATrackInCubePV
     << std::endl;
   }
 }
