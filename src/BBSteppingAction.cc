@@ -1,17 +1,19 @@
 #include "BBSteppingAction.hh"
 
+#include "BBEventAction.hh"
 #include "BBData.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4RunManager.hh"
 #include "G4VProcess.hh"
-
-BBSteppingAction::BBSteppingAction(BBEventAction* eventAction)
-: fpEventAction(eventAction)
-{}
 
 void BBSteppingAction::UserSteppingAction(const G4Step* step)
 {
 //  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
+
+  const G4UserEventAction* constUserEventAction = G4RunManager::GetRunManager()->GetUserEventAction();
+  G4UserEventAction* userEventAction = const_cast<G4UserEventAction*>(constUserEventAction);
+  BBEventAction* eventAction = static_cast<BBEventAction*>(userEventAction);
 
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4StepPoint* postStepPoint = step->GetPostStepPoint();
@@ -29,9 +31,9 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   if (prePV == BB::cubePV) {
     // Mark event as having a track in specified volume
-    fpEventAction->fCubeEncountered = true;
+    eventAction->fCubeEncountered = true;
     // Accumulate energy deposit
-    fpEventAction->fEDepEvent += eDep;
+    eventAction->fEDepEvent += eDep;
   }
 
   // Always use a lock when writing a file in MT mode

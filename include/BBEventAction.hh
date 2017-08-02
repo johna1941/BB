@@ -12,11 +12,10 @@ class BBEventAction: public G4UserEventAction
 {
   friend BBSteppingAction;
 public:
-  BBEventAction(BBRunAction*);
-  virtual void BeginOfEventAction(const G4Event*);
-  virtual void EndOfEventAction(const G4Event*);
+  BBEventAction();
+  void BeginOfEventAction(const G4Event*);
+  void EndOfEventAction(const G4Event*);
 private:
-  BBRunAction* fpRunAction;
   // Thread local, reset at begin of event
   G4bool fCubeEncountered;
   G4double fEDepEvent;

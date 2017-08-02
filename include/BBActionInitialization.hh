@@ -6,8 +6,8 @@
 class BBActionInitialization : public G4VUserActionInitialization
 {
 public:
-  virtual void BuildForMaster() const;
-  virtual void Build() const;
+  void BuildForMaster() const;
+  void Build() const;
 };
 
 #endif

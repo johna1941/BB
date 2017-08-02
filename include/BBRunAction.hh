@@ -12,7 +12,7 @@ public:
   BBRunAction();
   ~BBRunAction();
   void BeginOfRunAction(const G4Run*);
-  void   EndOfRunAction(const G4Run*);
+  void EndOfRunAction(const G4Run*);
 private:
   static BBRunAction* fpMasterRunAction;
   // Thread local, but reset at begin of run

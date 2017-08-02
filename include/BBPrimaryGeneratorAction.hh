@@ -9,8 +9,8 @@ class BBPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
   BBPrimaryGeneratorAction();
-  virtual ~BBPrimaryGeneratorAction();
-  virtual void GeneratePrimaries(G4Event*);
+  ~BBPrimaryGeneratorAction();
+  void GeneratePrimaries(G4Event*);
 
 private:
   G4GeneralParticleSource* fpParticleGun;

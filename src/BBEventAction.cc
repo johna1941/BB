@@ -5,11 +5,11 @@
 #include "G4SystemOfUnits.hh"
 #include "G4AutoLock.hh"
 
+#include "G4RunManager.hh"
 #include "G4Event.hh"
 
-BBEventAction::BBEventAction(BBRunAction* runAction)
-: fpRunAction(runAction)
-, fCubeEncountered(false)
+BBEventAction::BBEventAction()
+: fCubeEncountered(false)
 , fEDepEvent(0.)
 {}
 
@@ -24,8 +24,12 @@ void BBEventAction::EndOfEventAction(const G4Event* event)
 {   
 //  G4cout << "BBEventAction::EndOfEventAction" << G4endl;
 
-  ++fpRunAction->fNEvents;
-  if (fCubeEncountered) ++fpRunAction->fNEventsWithATrackInCubePV;
+  const G4UserRunAction* constUserRunAction = G4RunManager::GetRunManager()->GetUserRunAction();
+  G4UserRunAction* userRunAction = const_cast<G4UserRunAction*>(constUserRunAction);
+  BBRunAction* runAction = static_cast<BBRunAction*>(userRunAction);
+
+  ++runAction->fNEvents;
+  if (fCubeEncountered) ++runAction->fNEventsWithATrackInCubePV;
 
   // Always use a lock when writing a file in MT mode.
   // No action in case of sequential mode.
