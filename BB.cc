@@ -7,8 +7,6 @@
 #include "G4UImanager.hh"
 #include "G4VisExecutive.hh"
 
-// MT mode only
-
 int main(int argc,char** argv)
 {
   // Do this first to capture all output
