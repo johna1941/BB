@@ -21,7 +21,7 @@ void BBRunAction::BeginOfRunAction(const G4Run*)
 //  << G4Threading::G4GetThreadId()
 //  << G4endl;
 
-  if (G4Threading::IsMasterThread()) {
+  if (!G4Threading::IsWorkerThread()) {
     fpMasterRunAction = this;
   }
 
