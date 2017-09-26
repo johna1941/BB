@@ -6,7 +6,7 @@
 #include "G4Threading.hh"
 #include "G4AutoLock.hh"
 
-BBRunAction* BBRunAction::fpMasterRunAction = 0;
+BBRunAction* BBRunAction::fpMasterRunAction = nullptr;
 
 BBRunAction::BBRunAction()
 {}
