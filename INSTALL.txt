@@ -1,0 +1,6 @@
+In hep/your-working-directory/BB
+cmake \
+-DGEANT4_BUILD_MULTITHREADED=ON \
+-DGEANT4_BUILD_CXXSTD=c++11 \
+-DGeant4_DIR=/usr/local/src/gean4.10.01.p02 \
+-G Xcode
