@@ -5,12 +5,9 @@
 
 #include "globals.hh"
 
-class BBRunAction;
-class BBSteppingAction;
-
 class BBEventAction: public G4UserEventAction
 {
-  friend BBSteppingAction;
+  friend class BBSteppingAction;
 public:
   BBEventAction();
   void BeginOfEventAction(const G4Event*);

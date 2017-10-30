@@ -3,11 +3,9 @@
 
 #include "G4UserRunAction.hh"
 
-class BBEventAction;
-
 class BBRunAction : public G4UserRunAction
 {
-  friend BBEventAction;
+  friend class BBEventAction;
 public:
   BBRunAction();
   ~BBRunAction();

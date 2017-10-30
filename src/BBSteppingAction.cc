@@ -1,6 +1,7 @@
 #include "BBSteppingAction.hh"
 
 #include "BBEventAction.hh"
+#include "BBDetectorConstruction.hh"
 #include "BBData.hh"
 #include "G4SystemOfUnits.hh"
 
@@ -11,9 +12,19 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 {
 //  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
 
-  const G4UserEventAction* constUserEventAction = G4RunManager::GetRunManager()->GetUserEventAction();
-  G4UserEventAction* userEventAction = const_cast<G4UserEventAction*>(constUserEventAction);
-  BBEventAction* eventAction = static_cast<BBEventAction*>(userEventAction);
+  const G4UserEventAction* constUserEventAction
+  = G4RunManager::GetRunManager()->GetUserEventAction();
+  G4UserEventAction* userEventAction
+  = const_cast<G4UserEventAction*>(constUserEventAction);
+  BBEventAction* eventAction
+  = static_cast<BBEventAction*>(userEventAction);
+
+  const G4VUserDetectorConstruction* constUserDetectorConstruction
+  = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+  G4VUserDetectorConstruction* userDetectorConstruction
+  = const_cast<G4VUserDetectorConstruction*>(constUserDetectorConstruction);
+  BBDetectorConstruction* detectorConstruction
+  = static_cast<BBDetectorConstruction*>(userDetectorConstruction);
 
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4StepPoint* postStepPoint = step->GetPostStepPoint();
@@ -29,7 +40,7 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   const G4VProcess* processDefinedStep = postStepPoint->GetProcessDefinedStep();
 
-  if (prePV == BB::cubePV) {
+  if (prePV == detectorConstruction->fpCubePV) {
     // Mark event as having a track in specified volume
     eventAction->fCubeEncountered = true;
     // Accumulate energy deposit
@@ -55,7 +66,7 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
   << ',' << (postPV? postPV->GetName(): "none")
   << ',' << (postPV? postPV->GetCopyNo(): 0)
   << ',' << (creatorProcess? creatorProcess->GetProcessName(): "none")
-  << ',' << processDefinedStep->GetProcessName()
+  << ',' << (processDefinedStep? processDefinedStep->GetProcessName(): "none")
   << ',' << eDep/MeV
   << std::endl;
 

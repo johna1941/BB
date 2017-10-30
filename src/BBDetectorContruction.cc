@@ -29,9 +29,10 @@ G4VPhysicalVolume* BBDetectorConstruction::Construct()
   (G4Transform3D(),world_log,name,0,false,0);
 
   name = "Water";
-  G4VSolid* water = new G4Box(name, 1.*m,1.*m,1.*m);
+  G4double waterHalfLength = 1.*m;
+  G4VSolid* water = new G4Box(name, waterHalfLength, waterHalfLength, waterHalfLength);
   G4LogicalVolume* water_log = new G4LogicalVolume(water,water_mat,name);
-  BB::cubePV = new G4PVPlacement
+  fpCubePV = new G4PVPlacement
   (G4Transform3D(),water_log,name,world_log,false,0,checkOverlaps);
 
   return physWorld;
