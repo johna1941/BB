@@ -1,7 +1,7 @@
 #include "G4MTRunManager.hh"
 #include "G4PhysListFactory.hh"
 #include "BBDetectorConstruction.hh"
-#include "G4EmLivermorePolarizedPhysics.hh"
+#include "G4OpticalPhysics.hh"
 #include "BBActionInitialization.hh"
 #include "G4UIExecutive.hh"
 #include "G4UImanager.hh"
@@ -27,8 +27,8 @@ int main(int argc,char** argv)
   G4int verbose;
   G4PhysListFactory factory;
   G4VModularPhysicsList* physList = factory.GetReferencePhysList("FTFP_BERT");
+  physList->RegisterPhysics(new G4OpticalPhysics);
   physList->SetVerboseLevel(verbose = 1);
-  physList->ReplacePhysics(new G4EmLivermorePolarizedPhysics);
   runManager->SetUserInitialization(physList);
 
   runManager->SetUserInitialization(new BBActionInitialization);

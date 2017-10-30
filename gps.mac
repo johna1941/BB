@@ -1,5 +1,5 @@
-# Positron at rest
-/gps/particle e+
-/gps/ang/type iso
-/gps/energy 0 eV
+# Optical photons
+/gps/particle opticalphoton
+/gps/energy 3 eV
 /gps/position 0 0 0 m
+/gps/direction 0 0 1

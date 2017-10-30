@@ -4,6 +4,7 @@
 
 #include "G4NistManager.hh"
 #include "G4Box.hh"
+#include "G4Tubs.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -20,6 +21,7 @@ G4VPhysicalVolume* BBDetectorConstruction::Construct()
   G4NistManager* nist = G4NistManager::Instance();
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* water_mat = nist->FindOrBuildMaterial("G4_WATER");
+  G4Material* pipe_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
 
   name = "World";
   G4VSolid* world = new G4Box(name,2.*m,2.*m,2.*m);
@@ -34,6 +36,14 @@ G4VPhysicalVolume* BBDetectorConstruction::Construct()
   G4LogicalVolume* water_log = new G4LogicalVolume(water,water_mat,name);
   fpCubePV = new G4PVPlacement
   (G4Transform3D(),water_log,name,world_log,false,0,checkOverlaps);
+
+  name = "Pipe";
+  G4double pipeHalfLength = 1.*m;
+  G4VSolid* pipe = new G4Tubs(name, 0., 1.*cm, pipeHalfLength, 0., twopi);
+  G4LogicalVolume* pipe_log = new G4LogicalVolume(pipe,pipe_mat,name);
+  fpPipePV = new G4PVPlacement
+  (G4Translate3D(0., 0., waterHalfLength + pipeHalfLength),
+   pipe_log,name,world_log,false,0,checkOverlaps);
 
   return physWorld;
 }

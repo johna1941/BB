@@ -15,6 +15,7 @@ public:
   G4VPhysicalVolume* Construct();
 private:
   G4VPhysicalVolume* fpCubePV;
+  G4VPhysicalVolume* fpPipePV;
 };
 
 #endif
