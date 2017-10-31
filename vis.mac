@@ -2,7 +2,7 @@
 
 /run/numberOfThreads 8
 
-/process/optical/verbose 0
+#/process/optical/verbose 0
 
 /run/initialize
 
