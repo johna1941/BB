@@ -40,7 +40,7 @@ G4VPhysicalVolume* BBDetectorConstruction::Construct()
   pipe_mat->SetMaterialPropertiesTable(pipe_MPT);
 
   name = "World";
-  G4VSolid* world = new G4Box(name,2.*m,2.*m,2.*m);
+  G4VSolid* world = new G4Box(name,5.*m,5.*m,5.*m);
   G4LogicalVolume* world_log = new G4LogicalVolume(world,air_mat,name);
   world_log->SetVisAttributes(G4VisAttributes::GetInvisible());
   G4VPhysicalVolume* physWorld = new G4PVPlacement
