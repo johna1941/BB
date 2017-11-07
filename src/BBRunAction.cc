@@ -21,6 +21,8 @@ void BBRunAction::BeginOfRunAction(const G4Run*)
 //  << G4Threading::G4GetThreadId()
 //  << G4endl;
 
+  fTimer.Start();
+
   if (!G4Threading::IsWorkerThread()) {
     fpMasterRunAction = this;
   }
@@ -35,6 +37,8 @@ namespace {
 
 void BBRunAction::EndOfRunAction(const G4Run* run)
 {
+  fTimer.Stop();
+
   if (G4Threading::IsWorkerThread()) {
 
     G4cout
@@ -53,7 +57,8 @@ void BBRunAction::EndOfRunAction(const G4Run* run)
 
     G4cout
     << "BBRunAction::EndOfRunAction: Master thread: "
-    << fNEvents << " events"
+    << fNEvents << " events: "
+    << fTimer
     << G4endl;
     
     BB::outFile
