@@ -22,7 +22,7 @@ G4VPhysicalVolume* BBDetectorConstruction::Construct()
   G4Material* water_mat = nist->FindOrBuildMaterial("G4_WATER");
 
   name = "World";
-  G4VSolid* world = new G4Box(name,2.*m,2.*m,2.*m);
+  G4VSolid* world = new G4Box(name,5.*m,5.*m,5.*m);
   G4LogicalVolume* world_log = new G4LogicalVolume(world,world_mat,name);
   world_log->SetVisAttributes(G4VisAttributes::GetInvisible());
   G4VPhysicalVolume* physWorld = new G4PVPlacement

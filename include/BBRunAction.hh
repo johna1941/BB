@@ -2,6 +2,7 @@
 #define BBRunAction_hh
 
 #include "G4UserRunAction.hh"
+#include "G4Timer.hh"
 
 class BBRunAction : public G4UserRunAction
 {
@@ -13,6 +14,7 @@ public:
   void EndOfRunAction(const G4Run*);
 private:
   static BBRunAction* fpMasterRunAction;
+  G4Timer fTimer;
   // Thread local, but reset at begin of run
   G4int fNEvents;
   G4int fNEventsWithATrackInCubePV;
