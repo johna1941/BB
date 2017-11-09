@@ -8,23 +8,26 @@
 #include "G4RunManager.hh"
 #include "G4VProcess.hh"
 
-void BBSteppingAction::UserSteppingAction(const G4Step* step)
+BBSteppingAction::BBSteppingAction()
 {
-//  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
+  const G4VUserDetectorConstruction* constUserDetectorConstruction
+  = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+  G4VUserDetectorConstruction* userDetectorConstruction
+  = const_cast<G4VUserDetectorConstruction*>(constUserDetectorConstruction);
+  fpDetectorConstruction
+  = static_cast<BBDetectorConstruction*>(userDetectorConstruction);
 
   const G4UserEventAction* constUserEventAction
   = G4RunManager::GetRunManager()->GetUserEventAction();
   G4UserEventAction* userEventAction
   = const_cast<G4UserEventAction*>(constUserEventAction);
-  BBEventAction* eventAction
+  fpEventAction
   = static_cast<BBEventAction*>(userEventAction);
+}
 
-  const G4VUserDetectorConstruction* constUserDetectorConstruction
-  = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
-  G4VUserDetectorConstruction* userDetectorConstruction
-  = const_cast<G4VUserDetectorConstruction*>(constUserDetectorConstruction);
-  BBDetectorConstruction* detectorConstruction
-  = static_cast<BBDetectorConstruction*>(userDetectorConstruction);
+void BBSteppingAction::UserSteppingAction(const G4Step* step)
+{
+//  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
 
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4StepPoint* postStepPoint = step->GetPostStepPoint();
@@ -40,11 +43,11 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   const G4VProcess* processDefinedStep = postStepPoint->GetProcessDefinedStep();
 
-  if (prePV == detectorConstruction->fpCubePV) {
+  if (prePV == fpDetectorConstruction->fpCubePV) {
     // Mark event as having a track in specified volume
-    eventAction->fCubeEncountered = true;
+    fpEventAction->fCubeEncountered = true;
     // Accumulate energy deposit
-    eventAction->fEDepEvent += eDep;
+    fpEventAction->fEDepEvent += eDep;
   }
 
   // Always use a lock when writing a file in MT mode
