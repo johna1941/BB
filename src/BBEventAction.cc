@@ -11,7 +11,11 @@
 BBEventAction::BBEventAction()
 : fCubeEncountered(false)
 , fEDepEvent(0.)
-{}
+{
+  const G4UserRunAction* constUserRunAction = G4RunManager::GetRunManager()->GetUserRunAction();
+  G4UserRunAction* userRunAction = const_cast<G4UserRunAction*>(constUserRunAction);
+  fpRunAction = static_cast<BBRunAction*>(userRunAction);
+}
 
 void BBEventAction::BeginOfEventAction(const G4Event*)
 {
@@ -24,12 +28,8 @@ void BBEventAction::EndOfEventAction(const G4Event* event)
 {   
 //  G4cout << "BBEventAction::EndOfEventAction" << G4endl;
 
-  const G4UserRunAction* constUserRunAction = G4RunManager::GetRunManager()->GetUserRunAction();
-  G4UserRunAction* userRunAction = const_cast<G4UserRunAction*>(constUserRunAction);
-  BBRunAction* runAction = static_cast<BBRunAction*>(userRunAction);
-
-  ++runAction->fNEvents;
-  if (fCubeEncountered) ++runAction->fNEventsWithATrackInCubePV;
+  ++fpRunAction->fNEvents;
+  if (fCubeEncountered) ++fpRunAction->fNEventsWithATrackInCubePV;
 
   // Always use a lock when writing a file in MT mode.
   // No action in case of sequential mode.

@@ -1,13 +1,20 @@
-#ifndef AnnihilationPhotonsSteppingAction_hh
-#define AnnihilationPhotonsSteppingAction_hh
+#ifndef BBSteppingAction_hh
+#define BBSteppingAction_hh
 
 #include "G4UserSteppingAction.hh"
+
+class BBDetectorConstruction;
+class BBEventAction;
 
 class BBSteppingAction: public G4UserSteppingAction
 {
 public:
-  BBSteppingAction() {}
+  BBSteppingAction();
   void UserSteppingAction(const G4Step*);
+private:
+  BBDetectorConstruction* fpDetectorConstruction;
+  BBEventAction* fpEventAction;
+
 };
 
 #endif
