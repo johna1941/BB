@@ -12,6 +12,7 @@ public:
   BBSteppingAction();
   void UserSteppingAction(const G4Step*);
 private:
+  // Useful pointers
   BBDetectorConstruction* fpDetectorConstruction;
   BBEventAction* fpEventAction;
 

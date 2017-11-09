@@ -27,8 +27,6 @@ BBSteppingAction::BBSteppingAction()
 
 void BBSteppingAction::UserSteppingAction(const G4Step* step)
 {
-//  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
-
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4StepPoint* postStepPoint = step->GetPostStepPoint();
 
