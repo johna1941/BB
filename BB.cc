@@ -7,6 +7,8 @@
 #include "G4UImanager.hh"
 #include "G4VisExecutive.hh"
 
+#include <cstdio>
+
 int main(int argc,char** argv)
 {
   // Do this first to capture all output
@@ -14,6 +16,12 @@ int main(int argc,char** argv)
 
   // Choose the Random engine
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
+
+  int seed = time(0);
+  seed |= 1;  // Make sure it's odd
+  //  seed = 1502758967;  // Activate this line with a fixed seed if desired
+  CLHEP::HepRandom::setTheSeed(seed);
+  G4cout << "Random engine seeded with " << seed << G4endl;
 
 #ifdef G4MULTITHREADED
   G4MTRunManager* runManager = new G4MTRunManager;
