@@ -7,21 +7,19 @@
 #include "G4UImanager.hh"
 #include "G4VisExecutive.hh"
 
-#include <cstdio>
+#include <ctime>
 
 int main(int argc,char** argv)
 {
-  // Do this first to capture all output
-  G4UIExecutive* ui = new G4UIExecutive(argc, argv);
+  // Detect interactive mode (if no arguments) and define UI session
+  G4UIExecutive* ui = 0;
+  if ( argc == 1 ) {
+    // Do this before any other actions to capture all output
+    ui = new G4UIExecutive(argc, argv);
+  }
 
-  // Choose the Random engine
-  G4Random::setTheEngine(new CLHEP::RanecuEngine);
-
-  int seed = time(0);
-  seed |= 1;  // Make sure it's odd
-  //  seed = 1502758967;  // Activate this line with a fixed seed if desired
-  CLHEP::HepRandom::setTheSeed(seed);
-  G4cout << "Random engine seeded with " << seed << G4endl;
+  // Use the current time (in seconds) as the random number seed
+  G4Random::setTheSeed(time(0));  // Comment out if you want the same sequence
 
 #ifdef G4MULTITHREADED
   G4MTRunManager* runManager = new G4MTRunManager;
@@ -45,11 +43,20 @@ int main(int argc,char** argv)
   visManager->Initialize();
 
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
-  UImanager->ApplyCommand("/control/execute vis.mac");
 
-  ui->SessionStart();
+  // Process macro or start UI session
+  if ( ! ui ) {
+    // batch mode
+    G4String command = "/control/execute ";
+    G4String fileName = argv[1];
+    UImanager->ApplyCommand(command+fileName);
+  } else {
+    // interactive mode
+    UImanager->ApplyCommand("/control/execute vis.mac");
+    ui->SessionStart();
+    delete ui;
+  }
 
-  delete ui;
   delete visManager;
   delete runManager;
 }
