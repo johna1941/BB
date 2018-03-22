@@ -7,6 +7,8 @@
 #include "G4UImanager.hh"
 #include "G4VisExecutive.hh"
 
+#include "MultiVoxelDetectorConstruction.hh"
+
 #include <ctime>
 
 int main(int argc,char** argv)
@@ -28,7 +30,8 @@ int main(int argc,char** argv)
   G4RunManager* runManager = new G4RunManager;
 #endif
 
-  runManager->SetUserInitialization(new BBDetectorConstruction);
+//  runManager->SetUserInitialization(new BBDetectorConstruction);
+  runManager->SetUserInitialization(new MultiVoxelDetectorConstruction);
 
   G4int verbose;
   G4PhysListFactory factory;
