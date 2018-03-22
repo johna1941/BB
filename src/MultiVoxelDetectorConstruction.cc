@@ -217,7 +217,7 @@ G4VPhysicalVolume* MultiVoxelDetectorConstruction::Construct() {
   // // loop over array of voxels to create physical volumes
   SetNumberOfRows(2);
   SetNumberOfColumns(2);
-  G4PVPlacement* physFibre = new G4PVPlacement(0, G4ThreeVector(), logicFibre, "Fibre", logicClad, false, copyNumber, checkOverlaps);
+  G4PVPlacement* physFibre = new G4PVPlacement(0, G4ThreeVector(), logicFibre, "Fibre", logicClad, false, 0, checkOverlaps);
   fFibreVolumes.push_back(physFibre);
   for (int i =0; i<GetNumberOfRows(); i++) {
     for (int j=0; j<GetNumberOfColumns(); j++) {
