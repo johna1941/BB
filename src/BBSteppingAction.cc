@@ -8,25 +8,24 @@
 #include "G4RunManager.hh"
 #include "G4VProcess.hh"
 
-BBSteppingAction::BBSteppingAction()
+void BBSteppingAction::UserSteppingAction(const G4Step* step)
 {
-  const G4VUserDetectorConstruction* constUserDetectorConstruction
-  = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
-  G4VUserDetectorConstruction* userDetectorConstruction
-  = const_cast<G4VUserDetectorConstruction*>(constUserDetectorConstruction);
-  fpDetectorConstruction
-  = static_cast<BBDetectorConstruction*>(userDetectorConstruction);
+//  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
 
   const G4UserEventAction* constUserEventAction
   = G4RunManager::GetRunManager()->GetUserEventAction();
   G4UserEventAction* userEventAction
   = const_cast<G4UserEventAction*>(constUserEventAction);
-  fpEventAction
+  BBEventAction* eventAction
   = static_cast<BBEventAction*>(userEventAction);
-}
 
-void BBSteppingAction::UserSteppingAction(const G4Step* step)
-{
+  const G4VUserDetectorConstruction* constUserDetectorConstruction
+  = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+  G4VUserDetectorConstruction* userDetectorConstruction
+  = const_cast<G4VUserDetectorConstruction*>(constUserDetectorConstruction);
+  BBDetectorConstruction* detectorConstruction
+  = static_cast<BBDetectorConstruction*>(userDetectorConstruction);
+
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4StepPoint* postStepPoint = step->GetPostStepPoint();
 
@@ -41,11 +40,11 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   const G4VProcess* processDefinedStep = postStepPoint->GetProcessDefinedStep();
 
-  if (prePV == fpDetectorConstruction->fpCubePV) {
+  if (prePV == detectorConstruction->fpCubePV) {
     // Mark event as having a track in specified volume
-    fpEventAction->fCubeEncountered = true;
+    eventAction->fCubeEncountered = true;
     // Accumulate energy deposit
-    fpEventAction->fEDepEvent += eDep;
+    eventAction->fEDepEvent += eDep;
   }
 
   // Always use a lock when writing a file in MT mode

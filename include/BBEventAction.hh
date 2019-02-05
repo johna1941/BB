@@ -5,8 +5,6 @@
 
 #include "globals.hh"
 
-class BBRunAction;
-
 class BBEventAction: public G4UserEventAction
 {
   friend class BBSteppingAction;
@@ -15,8 +13,6 @@ public:
   void BeginOfEventAction(const G4Event*);
   void EndOfEventAction(const G4Event*);
 private:
-  // Useful pointer
-  BBRunAction* fpRunAction;
   // Thread local, reset at begin of event
   G4bool fCubeEncountered;
   G4double fEDepEvent;

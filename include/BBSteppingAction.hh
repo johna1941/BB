@@ -3,19 +3,11 @@
 
 #include "G4UserSteppingAction.hh"
 
-class BBDetectorConstruction;
-class BBEventAction;
-
 class BBSteppingAction: public G4UserSteppingAction
 {
 public:
-  BBSteppingAction();
+  BBSteppingAction() {}
   void UserSteppingAction(const G4Step*);
-private:
-  // Useful pointers
-  BBDetectorConstruction* fpDetectorConstruction;
-  BBEventAction* fpEventAction;
-
 };
 
 #endif
