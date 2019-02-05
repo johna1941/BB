@@ -42,12 +42,12 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 
   const G4VProcess* processDefinedStep = postStepPoint->GetProcessDefinedStep();
 
-  if (prePV == detectorConstruction->fpCubePV) {
-    // Mark event as having a track in specified volume
-    eventAction->fCubeEncountered = true;
-    // Accumulate energy deposit
-    eventAction->fEDepEvent += eDep;
-  }
+//  if (prePV == detectorConstruction->fpCubePV) {
+//    // Mark event as having a track in specified volume
+//    eventAction->fCubeEncountered = true;
+//    // Accumulate energy deposit
+//    eventAction->fEDepEvent += eDep;
+//  }
 
   // Always use a lock when writing a file in MT mode
   G4AutoLock lock(&BB::outFileMutex);
