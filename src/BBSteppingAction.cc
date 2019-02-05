@@ -12,6 +12,7 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
 {
 //  G4cout << "BBSteppingAction::UserSteppingAction" << G4endl;
 
+  // Get event action pointer (so we can send data)
   const G4UserEventAction* constUserEventAction
   = G4RunManager::GetRunManager()->GetUserEventAction();
   G4UserEventAction* userEventAction
@@ -19,6 +20,7 @@ void BBSteppingAction::UserSteppingAction(const G4Step* step)
   BBEventAction* eventAction
   = static_cast<BBEventAction*>(userEventAction);
 
+  // Get detector construction pointer (so we can access volume data)
   const G4VUserDetectorConstruction* constUserDetectorConstruction
   = G4RunManager::GetRunManager()->GetUserDetectorConstruction();
   G4VUserDetectorConstruction* userDetectorConstruction
