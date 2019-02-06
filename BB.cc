@@ -30,11 +30,8 @@ int main(int argc,char** argv)
 
   runManager->SetUserInitialization(new BBDetectorConstruction);
 
-  G4int verbose;
   G4PhysListFactory factory;
-  G4VModularPhysicsList* physList = factory.GetReferencePhysList("FTFP_BERT");
-  physList->SetVerboseLevel(verbose = 1);
-  physList->ReplacePhysics(new G4EmLivermorePolarizedPhysics);
+  G4VModularPhysicsList* physList = factory.GetReferencePhysList("FTFP_BERT_HP");
   runManager->SetUserInitialization(physList);
 
   runManager->SetUserInitialization(new BBActionInitialization);
